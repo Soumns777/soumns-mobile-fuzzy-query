@@ -1,6 +1,6 @@
 <template>
   <div>
-    <fuzzyQuery />
+    <fuzzyQuery :searchResult.sync="searchResult" :keyWordsLength.sync="keyWordsLength" />
   </div>
 </template>
 
@@ -11,6 +11,12 @@ export default {
   name: 'Home',
   components: {
     fuzzyQuery
+  },
+  data() {
+    return {
+      searchResult: [],
+      keyWordsLength: 4
+    }
   }
 }
 </script>
