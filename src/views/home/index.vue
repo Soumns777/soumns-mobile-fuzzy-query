@@ -1,10 +1,17 @@
 <template>
-  <div>Home</div>
+  <div>
+    <fuzzyQuery />
+  </div>
 </template>
 
 <script>
+import fuzzyQuery from '@/components/fuzzyQuery.vue'
+
 export default {
-  name: 'Home'
+  name: 'Home',
+  components: {
+    fuzzyQuery
+  }
 }
 </script>
 

@@ -1,4 +1,4 @@
-# vue2-webpack-template
+# soumns-mobile-fuzzy-query
 
 ## Project setup
 ```
