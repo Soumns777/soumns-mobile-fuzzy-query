@@ -2,6 +2,8 @@
 <template>
   <div>
     <fuzzyQuery :searchResult.sync="searchResult" :keyWordsLength.sync="keyWordsLength" />
+
+    {{ searchResultChanged }}
   </div>
 </template>
 
@@ -17,6 +19,11 @@ export default {
     return {
       searchResult: [],
       keyWordsLength: 4
+    }
+  },
+  computed: {
+    searchResultChanged() {
+      return console.log(this.searchResult)
     }
   }
 }

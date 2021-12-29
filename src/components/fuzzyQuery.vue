@@ -8,11 +8,10 @@
     </div>
 
     <!-- 下方模糊查询结果显示 -->
-    <div class="container-search-result">
+    <div class="container-search-result" :style="{ display: showDropDown ? 'block' : 'none' }">
       <div v-for="(item, index) in dropDownResult" :key="index">
-        <div class="container-search-result-eval">
-          <span style="color: #c8aa71">{{ keyWord }}</span>
-          <span> {{ item }}</span>
+        <div class="container-search-result-eval" @click="getCompleteKeyWord(htmlToText(item))">
+          <span v-html="item"></span>
         </div>
       </div>
     </div>
@@ -26,7 +25,7 @@ export default {
   name: 'fuzzyQuery',
   props: {
     searchResult: {
-      type: Array
+      type: [Array, String]
     },
     keyWordsLength: {
       type: [String, Number],
@@ -36,7 +35,8 @@ export default {
   data() {
     return {
       value: '', // 搜索内容
-      dropDownResult: [] // 联想下拉数据项
+      dropDownResult: [], // 联想下拉数据项
+      showDropDown: false
     }
   },
   mounted() {},
@@ -53,16 +53,15 @@ export default {
           }, 100)
         })
 
+        // 重置
+        this.dropDownResult = []
+        this.showDropDown = true
+
         res.forEach((item) => {
           if (item.indexOf(val) != -1) {
             this.dropDownResult.push(this.highLight(item, val))
           }
         })
-
-        console.log(this.dropDownResult, '-->this.dropDownResult')
-
-        // 下拉联想数据
-        // this.dropDownResult = res
       }
     },
 
@@ -71,26 +70,42 @@ export default {
      */
     highLight(str, key) {
       if (str.indexOf(key) != -1) {
-        this.keyWord = key
-
         var reg = new RegExp(`(${key})`, 'gm')
-        var replace = ''
+        var replace = '<span style="color:#008CFF">$1</span>'
         return str.replace(reg, replace)
       }
+    },
+
+    /**
+     * 将HTML标签里的内容转为纯文本
+     */
+    htmlToText(htmlStr) {
+      return htmlStr.replace(/<[^>]*>|/g, '')
+    },
+
+    /**
+     * 确定选择内容
+     */
+    getCompleteKeyWord(keyWord) {
+      this.value = keyWord
+      this.showDropDown = false
+      this.$emit('update:searchResult', this.value)
     },
 
     /**
      * 搜索结果
      */
     async searchKeywords(val) {
+      // console.log(val, '--->search')
+
       const res = await new Promise((resolve, reject) => {
         return setTimeout(() => {
           resolve(['南京阿里巴巴1', '南京阿里巴巴12', '南京阿里巴巴13', '南京阿里巴巴23'])
         }, 100)
       })
-
       // 下拉联想数据
       this.dropDownResult = res
+      this.showDropDown = true
     },
 
     cancel() {
@@ -122,15 +137,15 @@ export default {
     width: 600px;
     height: 200px;
     margin: 0 70px;
-    padding-bottom: 20px;
+    padding: 10px 0 20px 0;
     background-color: #fff;
     overflow-y: auto;
     overflow-x: hidden;
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
 
     .container-search-result-eval {
-      font-size: 14px;
-      padding: 20px 0 0 50px;
+      font-size: 16px;
+      padding: 30px 0 0 50px;
     }
   }
 }
