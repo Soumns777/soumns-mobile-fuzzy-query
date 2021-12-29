@@ -8,9 +8,9 @@
     </div>
 
     <!-- 下方模糊查询结果显示 -->
-    <div class="container-search-result">
+    <div class="container-search-result" :style="{ display: showDropDown ? 'block' : 'none' }">
       <div v-for="(item, index) in dropDownResult" :key="index">
-        <div class="container-search-result-eval">
+        <div class="container-search-result-eval" @click="getCompleteKeyWord(item)">
           <span style="color: #c8aa71">{{ keyWord }}</span>
           <span> {{ item }}</span>
         </div>
@@ -36,7 +36,8 @@ export default {
   data() {
     return {
       value: '', // 搜索内容
-      dropDownResult: [] // 联想下拉数据项
+      dropDownResult: [], // 联想下拉数据项
+      showDropDown: false
     }
   },
   mounted() {},
@@ -53,6 +54,10 @@ export default {
           }, 100)
         })
 
+        // 重置
+        this.dropDownResult = []
+        this.showDropDown = true
+
         res.forEach((item) => {
           if (item.indexOf(val) != -1) {
             this.dropDownResult.push(this.highLight(item, val))
@@ -60,9 +65,6 @@ export default {
         })
 
         console.log(this.dropDownResult, '-->this.dropDownResult')
-
-        // 下拉联想数据
-        // this.dropDownResult = res
       }
     },
 
@@ -80,17 +82,26 @@ export default {
     },
 
     /**
+     * 确定选择内容
+     */
+    getCompleteKeyWord(keyWord) {
+      let searchContent = this.keyWord.concat(keyWord)
+      this.value = searchContent
+      this.showDropDown = false
+    },
+
+    /**
      * 搜索结果
      */
     async searchKeywords(val) {
-      const res = await new Promise((resolve, reject) => {
-        return setTimeout(() => {
-          resolve(['南京阿里巴巴1', '南京阿里巴巴12', '南京阿里巴巴13', '南京阿里巴巴23'])
-        }, 100)
-      })
-
-      // 下拉联想数据
-      this.dropDownResult = res
+      console.log(val, '--->search')
+      // const res = await new Promise((resolve, reject) => {
+      //   return setTimeout(() => {
+      //     resolve(['南京阿里巴巴1', '南京阿里巴巴12', '南京阿里巴巴13', '南京阿里巴巴23'])
+      //   }, 100)
+      // })
+      // // 下拉联想数据
+      // this.dropDownResult = res
     },
 
     cancel() {
@@ -122,15 +133,15 @@ export default {
     width: 600px;
     height: 200px;
     margin: 0 70px;
-    padding-bottom: 20px;
+    padding: 10px 0 20px 0;
     background-color: #fff;
     overflow-y: auto;
     overflow-x: hidden;
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
 
     .container-search-result-eval {
-      font-size: 14px;
-      padding: 20px 0 0 50px;
+      font-size: 16px;
+      padding: 30px 0 0 50px;
     }
   }
 }
