@@ -1,24 +1,20 @@
-# soumns-mobile-fuzzy-query
 
-## Project setup
-```
-npm install
-```
+## :blue_heart::blue_heart:  soumns-mobile-fuzzy-query
 
-### Compiles and hot-reloads for development
-```
-npm run serve
+#### :sweat_drops: Init
+
+```ABAP
+pnpm install
 ```
 
-### Compiles and minifies for production
-```
-npm run build
+#### :sweat_drops:  Run
+
+```ABAP
+pnpm dev
 ```
 
-### Lints and fixes files
-```
-npm run lint
-```
+#### :sweat_drops:  Build
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+```ABAP
+pnpm build
+```

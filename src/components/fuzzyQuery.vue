@@ -25,7 +25,7 @@ export default {
   name: 'fuzzyQuery',
   props: {
     searchResult: {
-      type: Array
+      type: [Array, String]
     },
     keyWordsLength: {
       type: [String, Number],
@@ -62,8 +62,6 @@ export default {
             this.dropDownResult.push(this.highLight(item, val))
           }
         })
-
-        // console.log(this.dropDownResult, '-->this.dropDownResult')
       }
     },
 
@@ -91,20 +89,23 @@ export default {
     getCompleteKeyWord(keyWord) {
       this.value = keyWord
       this.showDropDown = false
+      this.$emit('update:searchResult', this.value)
     },
 
     /**
      * 搜索结果
      */
     async searchKeywords(val) {
-      console.log(val, '--->search')
-      // const res = await new Promise((resolve, reject) => {
-      //   return setTimeout(() => {
-      //     resolve(['南京阿里巴巴1', '南京阿里巴巴12', '南京阿里巴巴13', '南京阿里巴巴23'])
-      //   }, 100)
-      // })
-      // // 下拉联想数据
-      // this.dropDownResult = res
+      // console.log(val, '--->search')
+
+      const res = await new Promise((resolve, reject) => {
+        return setTimeout(() => {
+          resolve(['南京阿里巴巴1', '南京阿里巴巴12', '南京阿里巴巴13', '南京阿里巴巴23'])
+        }, 100)
+      })
+      // 下拉联想数据
+      this.dropDownResult = res
+      this.showDropDown = true
     },
 
     cancel() {
