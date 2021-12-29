@@ -10,9 +10,8 @@
     <!-- 下方模糊查询结果显示 -->
     <div class="container-search-result" :style="{ display: showDropDown ? 'block' : 'none' }">
       <div v-for="(item, index) in dropDownResult" :key="index">
-        <div class="container-search-result-eval" @click="getCompleteKeyWord(item)">
-          <span style="color: #c8aa71">{{ keyWord }}</span>
-          <span> {{ item }}</span>
+        <div class="container-search-result-eval" @click="getCompleteKeyWord(htmlToText(item))">
+          <span v-html="item"></span>
         </div>
       </div>
     </div>
@@ -64,7 +63,7 @@ export default {
           }
         })
 
-        console.log(this.dropDownResult, '-->this.dropDownResult')
+        // console.log(this.dropDownResult, '-->this.dropDownResult')
       }
     },
 
@@ -73,20 +72,24 @@ export default {
      */
     highLight(str, key) {
       if (str.indexOf(key) != -1) {
-        this.keyWord = key
-
         var reg = new RegExp(`(${key})`, 'gm')
-        var replace = ''
+        var replace = '<span style="color:#008CFF">$1</span>'
         return str.replace(reg, replace)
       }
+    },
+
+    /**
+     * 将HTML标签里的内容转为纯文本
+     */
+    htmlToText(htmlStr) {
+      return htmlStr.replace(/<[^>]*>|/g, '')
     },
 
     /**
      * 确定选择内容
      */
     getCompleteKeyWord(keyWord) {
-      let searchContent = this.keyWord.concat(keyWord)
-      this.value = searchContent
+      this.value = keyWord
       this.showDropDown = false
     },
 
