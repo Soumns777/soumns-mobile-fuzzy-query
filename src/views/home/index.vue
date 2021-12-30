@@ -1,7 +1,7 @@
 
 <template>
   <div>
-    <fuzzyQuery :searchResult.sync="searchResult" :keyWordsLength.sync="keyWordsLength" />
+    <fuzzyQuery :searchResult.sync='searchResult' :keyWordsLength.sync='keyWordsLength' :color.sync='color' />
 
     {{ searchResultChanged }}
   </div>
@@ -17,8 +17,9 @@ export default {
   },
   data() {
     return {
-      searchResult: [],
-      keyWordsLength: 4
+      searchResult: [], // 搜索获取数据
+      keyWordsLength: 4, // 关键字触发字数
+      color: '#008CFF' // 关键字颜色
     }
   },
   computed: {

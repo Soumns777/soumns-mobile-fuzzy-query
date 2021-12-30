@@ -1,20 +1,21 @@
 <template>
-  <div class="container">
+  <div class='container'>
     <!-- 输入框 -->
-    <div class="container-input">
-      <form action="/">
-        <van-search v-model="value" placeholder="请输入搜索关键词" @input="getCompleteResult" @search="searchKeywords" />
+    <div class='container-input'>
+      <form action='/'>
+        <van-search v-model='value' placeholder='请输入搜索关键词' @input='getCompleteResult' @search='searchKeywords' />
       </form>
     </div>
 
-    <!-- 下方模糊查询结果显示 -->
-    <div class="container-search-result" :style="{ display: showDropDown ? 'block' : 'none' }">
-      <div v-for="(item, index) in dropDownResult" :key="index">
-        <div class="container-search-result-eval" @click="getCompleteKeyWord(htmlToText(item))">
-          <span v-html="item"></span>
+    <!-- 下方 模糊下拉搜索项 -->
+    <div class='container-search-result' :style="{ display: showDropDown ? 'block' : 'none' }">
+      <div v-for='(item, index) in dropDownResult' :key='index'>
+        <div class='container-search-result-eval' @click='getCompleteKeyWord(htmlToText(item))'>
+          <span v-html='item'></span>
         </div>
       </div>
     </div>
+
   </div>
 </template>
 
@@ -30,16 +31,21 @@ export default {
     keyWordsLength: {
       type: [String, Number],
       require: true
+    },
+    color: {
+      type: [String, Number],
+      require: true
     }
   },
   data() {
     return {
       value: '', // 搜索内容
       dropDownResult: [], // 联想下拉数据项
-      showDropDown: false
+      showDropDown: false // 显示下拉数据
     }
   },
-  mounted() {},
+  mounted() {
+  },
   methods: {
     /**
      * 模糊查询
@@ -69,9 +75,10 @@ export default {
      * 模糊查询搜索高亮
      */
     highLight(str, key) {
+      console.log(this.color)
       if (str.indexOf(key) != -1) {
         var reg = new RegExp(`(${key})`, 'gm')
-        var replace = '<span style="color:#008CFF">$1</span>'
+        var replace = `<span style='color:${this.color}'>$1</span>`
         return str.replace(reg, replace)
       }
     },
@@ -90,22 +97,23 @@ export default {
       this.value = keyWord
       this.showDropDown = false
       this.$emit('update:searchResult', this.value)
+      this.searchKeywords(this.value)
     },
 
     /**
      * 搜索结果
      */
     async searchKeywords(val) {
-      // console.log(val, '--->search')
+      console.log(val, '--->search')
 
-      const res = await new Promise((resolve, reject) => {
-        return setTimeout(() => {
-          resolve(['南京阿里巴巴1', '南京阿里巴巴12', '南京阿里巴巴13', '南京阿里巴巴23'])
-        }, 100)
-      })
-      // 下拉联想数据
-      this.dropDownResult = res
-      this.showDropDown = true
+      // const res = await new Promise((resolve, reject) => {
+      //   return setTimeout(() => {
+      //     resolve(['南京阿里巴巴1', '南京阿里巴巴12', '南京阿里巴巴13', '南京阿里巴巴23'])
+      //   }, 100)
+      // })
+      // // 下拉联想数据
+      // this.dropDownResult = res
+      // this.showDropDown = true
     },
 
     cancel() {
@@ -115,7 +123,7 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped lang='scss'>
 /deep/ .van-search__content--square {
   border-radius: 30px;
 }
@@ -124,6 +132,7 @@ export default {
   color: #2a69c8;
   font-size: 40px;
 }
+
 .container {
   padding-top: 20px;
   width: 100vw;
