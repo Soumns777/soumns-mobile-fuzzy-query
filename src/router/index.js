@@ -13,7 +13,7 @@ let routes = [
 
 routes = [...routes, ...user]
 
-console.log(routes, '--->route')
+// console.log(routes, '--->route')
 
 const router = new VueRouter({
   mode: 'history',
